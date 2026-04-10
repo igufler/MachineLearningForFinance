@@ -1,13 +1,12 @@
 # pip install yfinance pandas pandas_datareader statsmodels
 
-import pandas as pd
 import yfinance as yf
 import statsmodels.api as sm
 from pandas_datareader import data as pdr
 import matplotlib.pyplot as plt
 import numpy as np
 # --------------------
-# User inputs
+# Settings
 # --------------------
 ticker = "IBM"
 market = "^GSPC"     # or "SPY"
@@ -52,11 +51,6 @@ df = df.dropna()
 # Interaction term
 df["MKT_X_VIX"] = df["MKT_EXCESS"] * df["VIX"]
 
-# (Optional but recommended) centered interaction to reduce multicollinearity:
-# df["MKTc"] = df["MKT_EXCESS"] - df["MKT_EXCESS"].mean()
-# df["VIXc"] = df["VIX"] - df["VIX"].mean()
-# df["MKT_X_VIX"] = df["MKTc"] * df["VIXc"]
-
 # --------------------
 # 4) Regressions (daily -> use HAC/Newey-West SE)
 # --------------------
@@ -78,9 +72,6 @@ print("\n=== Augmented (Market + VIX + Interaction, daily, HAC SE) ===")
 print(aug_int.summary())
 
 
-# assumes you already have:
-# df with columns ["VIX"] (daily % change in VIX, decimal) and
-# aug_int = fitted OLS result for STOCK_EXCESS ~ const + MKT_EXCESS + VIX + MKT_X_VIX
 
 beta0 = aug_int.params["MKT_EXCESS"]
 gamma = aug_int.params["MKT_X_VIX"]
