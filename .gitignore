@@ -1,0 +1,5 @@
+/.idea
+/Chapter2/.ipynb_checkpoints
+/Chapter1/.ipynb_checkpoints
+*.png
+*.csv
