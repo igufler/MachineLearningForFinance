@@ -26,7 +26,6 @@ df = df.dropna()
 
 # ----------------------------
 # Train/test split
-# (Random split makes the X–Y scatter look more like the ISLR figure)
 # ----------------------------
 split = int(0.9 * len(df))
 train = df.iloc[:split].copy()

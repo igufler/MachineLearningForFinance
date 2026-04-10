@@ -56,15 +56,8 @@ split = int(0.8 * len(data))
 X_tr, y_tr = X[:split], y[:split]
 X_te, y_te = X[split:], y[split:]
 
-# Standardize for KNN distance calculations
-
-if standardize:
-    scaler = StandardScaler().fit(X_tr)
-    X_tr_s = scaler.transform(X_tr)
-    X_te_s = scaler.transform(X_te)
-else:
-    X_tr_s = X_tr
-    X_te_s = X_te
+X_tr_s = X_tr
+X_te_s = X_te
 
 # -----------------------------
 # Train/test error vs k
