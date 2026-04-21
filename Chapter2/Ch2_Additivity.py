@@ -84,7 +84,7 @@ V = df["VIX"].to_numpy()
 cov = aug_int.cov_params().loc[["MKT_EXCESS", "MKT_X_VIX"], ["MKT_EXCESS", "MKT_X_VIX"]].to_numpy()
 
 var_beta = cov[0, 0] + (V**2) * cov[1, 1] + 2 * V * cov[0, 1]
-se_beta = np.sqrt(np.maximum(var_beta, 0))
+se_beta = np.sqrt(var_beta)
 df["BETA_LO"] = df["BETA_COND"] - 1 * se_beta
 df["BETA_HI"] = df["BETA_COND"] + 1 * se_beta
 
