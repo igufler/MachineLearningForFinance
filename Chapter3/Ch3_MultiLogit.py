@@ -74,3 +74,11 @@ print("\n=== Logit ===")
 print(logit.summary())
 
 
+ame = logit.get_margeff(at='overall')  # AME
+mem = logit.get_margeff(at='mean')  # MEM
+
+print(ame.summary())
+print(mem.summary())
+
+
+

@@ -30,7 +30,7 @@ df["FAIL_1Y"] = ((days_to_del >= 1) & (days_to_del <= 365) & (df["dlrsn"].isin(F
 df["SURV_5Y"] = (df["dldte"].isna() | ((df["dldte"] - df["datadate"]).dt.days > 5 * 365)).astype(int)
 
 # ----------------------------
-# Choose predictor that tends to separate failures from survivors.
+# Choose predictor
 # ----------------------------
 df = df[df['atq'] > 0]
 df["X"] = np.log(df["atq"])  # SIZE
@@ -82,6 +82,13 @@ Xg = sm.add_constant(pd.DataFrame({"X": x_grid}))
 p_ols = ols.predict(Xg)
 p_log = logit.predict(Xg)
 
+ame = logit.get_margeff(at='overall')  # AME
+mem = logit.get_margeff(at='mean')  # MEM
+
+print(ame.summary())
+print(mem.summary())
+
+
 # Show how OLS violates [0,1] on the grid
 print("\nOLS p-hat on grid: min =", float(p_ols.min()), "max =", float(p_ols.max()))
 print("Share of grid with p<0 or p>1:", float(((p_ols < 0) | (p_ols > 1)).mean()))
@@ -101,7 +108,7 @@ ax.plot(x_grid, p_log, linewidth=2, color='orange', label='Logit')
 ax.axhline(0, linestyle="--", linewidth=1, color='black')
 ax.axhline(1, linestyle="--", linewidth=1, color='black')
 ax.set_title("OLS vs. Logit")
-ax.set_xlabel("log(assets")
+ax.set_xlabel("log(assets)")
 ax.set_ylabel("Probability of failure-type deletion within 1 year")
 ax.set_ylim(-0.1, 1.2)
 ax.set_xlim([x_lo, x_hi])
